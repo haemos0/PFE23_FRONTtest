@@ -56,6 +56,13 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: ToolInstaller@1
+            displayName: 'Install Node.js 18.x'
+            inputs:
+              versionSpec: '18.x'
+              addToPath: true
+          - script: |
+              npm install --global npm@latest
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: PFE23-FRONTtest-dev'
             inputs:
@@ -63,8 +70,10 @@ stages:
               appType: webAppLinux
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'NODE|14-lts'
+              RuntimeStack: 'NODE|18.x'
               ScriptType: 'Inline Script'
               InlineScript: |
-                npm install
+                npm install --legacy-peer-deps
                 npm run build --if-present
+
+
