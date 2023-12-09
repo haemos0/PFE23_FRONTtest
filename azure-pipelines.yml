@@ -1,3 +1,24 @@
+# Build a Node.js React app and deploy it to Azure as a Linux web app.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- master
+
+variables:
+
+  # Azure Resource Manager connection created during pipeline creation
+  azureSubscription: '48159536-9bce-49b8-a7dd-b7174f3e7101'
+
+  # Web app name
+  webAppName: 'PFE23-FRONTtest-dev'
+
+  # Environment name
+  environmentName: 'PFE23-FRONTtest-dev'
+
+  # Agent VM image name
+  vmImageName: 'ubuntu-latest'
+
 stages:
 - stage: Build
   displayName: Build stage
