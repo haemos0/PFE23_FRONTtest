@@ -64,12 +64,6 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: |
-              # Installe Node.js v18.x
-              curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-              sudo apt-get install -y nodejs
-            displayName: 'Install Node.js'
-
           - task: AzureRmWebAppDeployment@4
             displayName: 'Azure App Service Deploy: PFE23-FRONTtest-dev'
             inputs:
@@ -82,4 +76,3 @@ stages:
               InlineScript: |
                 npm install
                 npm run build --if-present
-
