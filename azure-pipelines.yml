@@ -1,25 +1,3 @@
-# Node.js React Web App to Linux on Azure
-# Build a Node.js React app and deploy it to Azure as a Linux web app.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
-trigger:
-- master
-
-variables:
-
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '48159536-9bce-49b8-a7dd-b7174f3e7101'
-
-  # Web app name
-  webAppName: 'PFE23-FRONTtest-dev'
-
-  # Environment name
-  environmentName: 'PFE23-FRONTtest-dev'
-
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
-
 stages:
 - stage: Build
   displayName: Build stage
@@ -30,6 +8,15 @@ stages:
       vmImage: $(vmImageName)
 
     steps:
+    - task: NodeTool@0
+      inputs:
+        versionSpec: '18.x'
+      displayName: 'Install Node.js'
+
+    - script: |
+        npm install -g npm@latest
+      displayName: 'Update npm'
+
     - task: ArchiveFiles@2
       displayName: 'Archive files'
       inputs:
@@ -63,8 +50,8 @@ stages:
               appType: webAppLinux
               WebAppName: $(webAppName)
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'NODE|10.10'
+              RuntimeStack: 'NODE|18.x'
               ScriptType: 'Inline Script'
               InlineScript: |
-                npm install
+                npm install --legacy-peer-deps
                 npm run build --if-present
