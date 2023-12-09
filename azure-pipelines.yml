@@ -74,5 +74,5 @@ stages:
               RuntimeStack: 'NODE|18.x'
               ScriptType: 'Inline Script'
               InlineScript: |
-                npm install --legacy-peer-deps
+                npm install
                 npm run build --if-present
